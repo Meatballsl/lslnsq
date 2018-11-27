@@ -256,6 +256,11 @@ func (w *Producer) sendCommandAsync(cmd *Command, doneChan chan *ProducerTransac
 }
 
 func (w *Producer) connect() error {
+	defer func() {
+		if err:= recover();err != nil{
+			w.log(LogLevelError, "(%s) connect panic err - %s", w.addr, err)
+		}
+	}()
 	w.guard.Lock()
 	defer w.guard.Unlock()
 
